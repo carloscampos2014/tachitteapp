@@ -3,7 +3,7 @@ name: Deploy Blazor to GitHub Pages
 on:
   push:
     branches:
-      - main # Altere para o nome do seu branch principal se for diferente
+      - master # Altere para o nome do seu branch principal se for diferente
 
 jobs:
   build_and_deploy:
