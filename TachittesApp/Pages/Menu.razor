@@ -1,0 +1,123 @@
+﻿@page "/"
+@using System.Net.Http.Json
+@using TachittesApp.Models
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
+<div class="bg-white p-4 rounded-lg shadow-md mb-6">
+    <h2 class="text-2xl font-bold mb-2 text-red-600 text-center">O que são Tachittes?</h2>
+    <div class="about-tachitte">
+        <img src="img/tradicional.png" alt="Tachitte Tradicional" class="w-full md:w-auto h-auto object-cover rounded-md flex-shrink-0" />
+        <p class="text-red-800 leading-relaxed text-center md:text-left">
+            Descubra o Tachitte, a nossa versão aprimorada do sushi! Mais do que um simples enrolado, o Tachitte
+            é uma experiência completa: <b>maior</b>, <b>mais recheado</b> e irresistivelmente saboroso. Nossa
+            receita base é feita com <b>arroz</b>, <b>alga</b>, <b>cenoura</b> e uma proteína suculenta, criando
+            a tela perfeita para as mais variadas combinações de sabores. Venha se surpreender!
+        </p>
+    </div>
+</div>
+
+<div class="bg-white p-4 rounded-lg shadow-md mb-6">
+    <h2 class="text-xl font-bold mb-4 text-red-600 text-center">Escolha a opção de pedido</h2>
+    <div class="flex space-x-4">
+        <button id="delivery-option"
+                class="flex-1 flex items-center justify-center py-3 px-4 rounded-lg font-bold text-white bg-red-400 hover:bg-red-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="lucide lucide-truck mr-2">
+                <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
+                <path d="M15 18h6" />
+                <path d="M22 13V6a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v7" />
+                <path d="M7.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                <path d="M17.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+            </svg>
+            Entrega
+        </button>
+        <button id="pickup-option"
+                class="flex-1 flex items-center justify-center py-3 px-4 rounded-lg font-bold text-white bg-red-500 hover:bg-red-600 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="lucide lucide-shopping-bag mr-2">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                <line x1="3" x2="21" y1="6" y2="6" />
+                <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            Retirar
+        </button>
+    </div>
+</div>
+
+<div class="bg-white rounded-lg shadow-md mb-6">
+    <div class="flex border-b border-red-300">
+        @if (menuData != null)
+        {
+            @foreach (var category in menuData.Categories)
+            {
+                <button @onclick="() => selectedCategory = category"
+                        class="tab-button flex-1 py-3 px-4 text-center text-red-800 hover:bg-red-50 transition-colors rounded-t-lg
+                                       @(selectedCategory == category ? "active" : "")">
+                    @category.Name
+                </button>
+            }
+        }
+    </div>
+</div>
+
+<div class="menu-tab">
+    @if (selectedCategory != null)
+    {
+        <h2 class="text-2xl font-bold text-red-600 mb-4">@selectedCategory.Name</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach (var itemId in selectedCategory.ItemIds)
+            {
+                var item = menuData.Items.FirstOrDefault(i => i.Id == itemId);
+                if (item != null)
+                {
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden p-4 flex flex-col justify-between">
+                        <div class="flex-shrink-0 mb-4">
+                            <img src="@($"/img/{item.Image}")" alt="@item.Name" class="w-full h-52 object-cover rounded-md mb-4 menu-item-image" onerror="this.onerror=null;this.src='https://placehold.co/400x300/E5E7EB/6B7280?text=Sem+imagem';" />
+                            <h3 class="text-lg font-bold text-red-900">@item.Name</h3>
+                            <p class="text-sm text-red-400 min-h-[40px]">@item.Description</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-auto">
+                            <span class="text-xl font-bold text-red-600">@item.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                            <button class="add-to-cart-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="lucide lucide-plus">
+                                    <path d="M5 12h14" />
+                                    <path d="M12 5v14" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private MenuData? menuData;
+    private Category? selectedCategory;
+    private Dictionary<string, object> iconMap = new Dictionary<string, object>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            menuData = await Http.GetFromJsonAsync<MenuData>("data/dados.json");
+            selectedCategory = menuData?.Categories.FirstOrDefault();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar os dados: {ex.Message}");
+            menuData = null;
+        }
+    }
+
+    private void SelectCategory(Category category)
+    {
+        selectedCategory = category;
+    }
+}

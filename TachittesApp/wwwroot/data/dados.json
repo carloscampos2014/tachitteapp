@@ -1,0 +1,558 @@
+{
+  "categories": [
+    {
+      "id": "salgados",
+      "name": "Tachittes Salgados",
+      "description": "Nossos rolinhos clássicos com recheios salgados incríveis.",
+      "itemIds": [ "tradicional", "bacon", "pepperone", "salsicha", "queijo" ]
+    },
+    {
+      "id": "doces",
+      "name": "Tachittes Doces",
+      "description": "Uma sobremesa única em forma de rolinho, irresistível e cheia de sabor.",
+      "itemIds": [ "romeu-e-julieta", "chocolate", "caramelo" ]
+    },
+    {
+      "id": "veganos",
+      "name": "Tachittes Veganos",
+      "description": "Sabores incríveis e 100% à base de plantas. Deliciosamente vegano.",
+      "itemIds": [ "vegano" ]
+    },
+    {
+      "id": "customizados",
+      "name": "Tachittes Customizados",
+      "description": "Crie o seu próprio Tachitte, do seu jeito, com os ingredientes que você mais ama!",
+      "itemIds": [ "customizado" ]
+    },
+    {
+      "id": "bebidas",
+      "name": "Bebidas",
+      "description": "Refresque-se com nossas opções de sucos e refrigerantes.",
+      "itemIds": [ "suco-laranja", "suco-limao", "suco-tangerina", "suco-morango", "suco-maca", "suco-uva", "refri-lata", "refri-600ml", "refri-2l" ]
+    }
+  ],
+  "items": [
+    {
+      "id": "tradicional",
+      "name": "Tradicional",
+      "description": "O sabor autêntico que deu origem ao Tachitte. Uma explosão de sabores frescos e tradicionais.",
+      "image": "tradicional.png",
+      "price": 28.00
+    },
+    {
+      "id": "bacon",
+      "name": "Bacon",
+      "description": "A receita tradicional com o toque defumado e crocante do bacon.",
+      "image": "bacon.png",
+      "price": 31.00
+    },
+    {
+      "id": "pepperone",
+      "name": "Pepperone",
+      "description": "Um toque de pimenta com o sabor inconfundível do pepperone fatiado.",
+      "image": "pepperone.png",
+      "price": 30.50
+    },
+    {
+      "id": "salsicha",
+      "name": "Salsicha",
+      "description": "A combinação perfeita da receita padrão com salsicha em fatias.",
+      "image": "salsicha.png",
+      "price": 27.50
+    },
+    {
+      "id": "queijo",
+      "name": "Queijo",
+      "description": "Para os amantes de queijo, nosso rolinho com mussarela picada, derretendo a cada mordida.",
+      "image": "queijo.png",
+      "price": 29.00
+    },
+    {
+      "id": "romeu-e-julieta",
+      "name": "Romeu e Julieta",
+      "description": "O clássico brasileiro, a doçura da goiabada se encontra com a suavidade do queijo mussarela.",
+      "image": "romeu-e-julieta.png",
+      "price": 26.00
+    },
+    {
+      "id": "chocolate",
+      "name": "Chocolate",
+      "description": "Para os chocólatras de plantão: um recheio generoso de chocolate ao leite ou branco.",
+      "image": "chocolate.png",
+      "price": 24.50
+    },
+    {
+      "id": "caramelo",
+      "name": "Caramelo",
+      "description": "A doçura e a textura do caramelo em um rolinho que vai te surpreender.",
+      "image": "caramelo.png",
+      "price": 23.00
+    },
+    {
+      "id": "vegano",
+      "name": "Vegano",
+      "description": "A receita padrão vegana, feita com ingredientes frescos e cheia de sabor.",
+      "image": "vegano.png",
+      "price": 29.50
+    },
+    {
+      "id": "customizado",
+      "name": "Customizado",
+      "description": "Solte a sua criatividade e monte um Tachitte único, usando até 5 ingredientes da sua escolha.",
+      "image": "customizado.png",
+      "price": 35.00
+    },
+    {
+      "id": "suco-laranja",
+      "name": "Suco de Laranja",
+      "description": "O clássico refrescante e cheio de vitamina C.",
+      "image": "suco-laranja.png",
+      "price": 8.00
+    },
+    {
+      "id": "suco-limao",
+      "name": "Suco de Limão",
+      "description": "O sabor cítrico e ácido para um momento revigorante.",
+      "image": "suco-limao.png",
+      "price": 7.50
+    },
+    {
+      "id": "suco-tangerina",
+      "name": "Suco de Tangerina",
+      "description": "Um toque mais doce e delicado, ideal para qualquer hora.",
+      "image": "suco-tangerina.png",
+      "price": 8.50
+    },
+    {
+      "id": "suco-morango",
+      "name": "Suco de Morango",
+      "description": "A doçura da fruta em um suco que é a cara do verão.",
+      "image": "suco-morango.png",
+      "price": 9.00
+    },
+    {
+      "id": "suco-maca",
+      "name": "Suco de Maçã",
+      "description": "Um suco leve e delicioso, com o sabor suave da maçã.",
+      "image": "suco-maca.png",
+      "price": 8.00
+    },
+    {
+      "id": "suco-uva",
+      "name": "Suco de Uva",
+      "description": "O sabor intenso e adocicado da uva, uma bebida clássica.",
+      "image": "suco-uva.png",
+      "price": 8.50
+    },
+    {
+      "id": "refri-lata",
+      "name": "Refrigerante Lata",
+      "description": "A praticidade e o sabor do seu refrigerante preferido em lata.",
+      "image": "refri-lata.png",
+      "price": 6.00
+    },
+    {
+      "id": "refri-600ml",
+      "name": "Refrigerante 600ml",
+      "description": "Perfeito para matar a sede em qualquer momento.",
+      "image": "refri-600ml.png",
+      "price": 9.00
+    },
+    {
+      "id": "refri-2l",
+      "name": "Refrigerante 2L",
+      "description": "Para compartilhar com a galera ou ter em casa.",
+      "image": "refri-2l.png",
+      "price": 12.00
+    }
+  ],
+  "customizationSteps": [
+    {
+      "productType": "Tachittes",
+      "description": "Passos de customização para todos os tipos de Tachittes.",
+      "steps": [
+        {
+          "stepName": "Escolha o Enrolador",
+          "options": [
+            {
+              "name": "Alga",
+              "price": 0.00
+            },
+            {
+              "name": "Soy Papper Verde",
+              "price": 0.00
+            },
+            {
+              "name": "Massa de Pastel",
+              "price": 0.00
+            }
+          ]
+        },
+        {
+          "stepName": "Escolha a Massa",
+          "options": [
+            {
+              "name": "Arroz Agulinha",
+              "price": 0.00
+            },
+            {
+              "name": "Arroz Integral",
+              "price": 0.00
+            },
+            {
+              "name": "Arroz Sushi",
+              "price": 0.00
+            }
+          ]
+        },
+        {
+          "stepName": "Escolha o Tamanho",
+          "options": [
+            {
+              "name": "Pequeno (6cm)",
+              "price": 0.00
+            },
+            {
+              "name": "Medio (8cm)",
+              "price": 2.00
+            },
+            {
+              "name": "Grande (12cm)",
+              "price": 5.00
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "productType": "Tachittes Salgados",
+      "description": "Customizações adicionais para os Tachittes Salgados.",
+      "steps": [
+        {
+          "stepName": "Escolha a Proteína",
+          "options": [
+            {
+              "name": "File de Peito de frango",
+              "price": 0.00
+            },
+            {
+              "name": "Atum",
+              "price": 0.00
+            },
+            {
+              "name": "Patinho",
+              "price": 1.50
+            },
+            {
+              "name": "Contra-File",
+              "price": 2.00
+            },
+            {
+              "name": "Salmão",
+              "price": 4.00
+            },
+            {
+              "name": "Camarão",
+              "price": 5.00
+            }
+          ]
+        },
+        {
+          "stepName": "Adicione um Molho Salgado",
+          "options": [
+            {
+              "name": "Gergelim Preto",
+              "price": 3.00
+            },
+            {
+              "name": "Cebolinha Picada",
+              "price": 2.50
+            },
+            {
+              "name": "Cream Cheese",
+              "price": 4.00
+            },
+            {
+              "name": "Molho Teriyaki",
+              "price": 3.50
+            },
+            {
+              "name": "Molho Shoyo",
+              "price": 2.50
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "productType": "Tachittes Veganos",
+      "description": "Customizações adicionais para os Tachittes Veganos.",
+      "steps": [
+        {
+          "stepName": "Escolha a Proteína",
+          "options": [
+            {
+              "name": "Tofu",
+              "price": 0.00
+            },
+            {
+              "name": "Cogumelos (Shimeji ou Shiitake)",
+              "price": 3.00
+            },
+            {
+              "name": "\"Carne\" de Jaca Verde",
+              "price": 2.50
+            }
+          ]
+        },
+        {
+          "stepName": "Adicione um Molho Salgado",
+          "options": [
+            {
+              "name": "Gergelim Preto",
+              "price": 3.00
+            },
+            {
+              "name": "Cebolinha Picada",
+              "price": 2.50
+            },
+            {
+              "name": "Cream Cheese",
+              "price": 4.00
+            },
+            {
+              "name": "Molho Teriyaki",
+              "price": 3.50
+            },
+            {
+              "name": "Molho Shoyo",
+              "price": 2.50
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "productType": "Tachittes Customizados",
+      "description": "Personalize seu Tachitte do seu jeito!",
+      "steps": [
+        {
+          "stepName": "Escolha a Proteína",
+          "options": [
+            {
+              "name": "File de Peito de frango",
+              "price": 0.00
+            },
+            {
+              "name": "Atum",
+              "price": 0.00
+            },
+            {
+              "name": "Tofu",
+              "price": 0.00
+            },
+            {
+              "name": "Patinho",
+              "price": 1.50
+            },
+            {
+              "name": "Contra-File",
+              "price": 2.00
+            },
+            {
+              "name": "\"Carne\" de Jaca Verde",
+              "price": 2.50
+            },
+            {
+              "name": "Cogumelos (Shimeji ou Shiitake)",
+              "price": 3.00
+            },
+            {
+              "name": "Salmão",
+              "price": 4.00
+            },
+            {
+              "name": "Camarão",
+              "price": 5.00
+            }
+          ]
+        },
+        {
+          "stepName": "Adicione um Molho Salgado",
+          "options": [
+            {
+              "name": "Gergelim Preto",
+              "price": 3.00
+            },
+            {
+              "name": "Cebolinha Picada",
+              "price": 2.50
+            },
+            {
+              "name": "Cream Cheese",
+              "price": 4.00
+            },
+            {
+              "name": "Molho Teriyaki",
+              "price": 3.50
+            },
+            {
+              "name": "Molho Shoyo",
+              "price": 2.50
+            }
+          ]
+        },
+        {
+          "stepName": "Escolha até 5 Ingredientes Adicionais",
+          "options": [
+            {
+              "name": "Bacon",
+              "price": 4.00
+            },
+            {
+              "name": "Pepperone",
+              "price": 3.50
+            },
+            {
+              "name": "Salsicha",
+              "price": 2.50
+            },
+            {
+              "name": "Queijo",
+              "price": 3.00
+            },
+            {
+              "name": "Goiabada",
+              "price": 2.00
+            },
+            {
+              "name": "Chocolate ao leite",
+              "price": 3.00
+            },
+            {
+              "name": "Chocolate branco",
+              "price": 3.00
+            },
+            {
+              "name": "Caramelo",
+              "price": 2.50
+            },
+            {
+              "name": "Granulado",
+              "price": 2.00
+            },
+            {
+              "name": "Coco Ralado",
+              "price": 2.00
+            },
+            {
+              "name": "Cenoura",
+              "price": 1.50
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "productType": "Tachittes Doces",
+      "description": "Customizações adicionais para os Tachittes Doces.",
+      "steps": [
+        {
+          "stepName": "Adicione um Molho Doce",
+          "options": [
+            {
+              "name": "Calda de Chocolate ao Leite",
+              "price": 4.50
+            },
+            {
+              "name": "Calda de Chocolate Branco",
+              "price": 4.50
+            },
+            {
+              "name": "Calda de Morango",
+              "price": 4.00
+            },
+            {
+              "name": "Nutella",
+              "price": 5.00
+            },
+            {
+              "name": "Leite Condensado",
+              "price": 3.50
+            },
+            {
+              "name": "Granulado",
+              "price": 2.00
+            },
+            {
+              "name": "Coco Ralado",
+              "price": 2.50
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "productType": "Sucos",
+      "description": "Customizações para os Sucos.",
+      "steps": [
+        {
+          "stepName": "Escolha a Base",
+          "options": [
+            {
+              "name": "Água",
+              "price": 0.00
+            },
+            {
+              "name": "Leite",
+              "price": 2.00
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "productType": "Refrigerantes",
+      "description": "Customizações para os Refrigerantes.",
+      "steps": [
+        {
+          "stepName": "Escolha a Marca e Tamanho",
+          "options": [
+            {
+              "name": "Coca-Cola",
+              "price": 0.00
+            },
+            {
+              "name": "Coca-Cola Zero",
+              "price": 0.00
+            },
+            {
+              "name": "Fanta Laranja",
+              "price": 0.00
+            },
+            {
+              "name": "Fanta Uva",
+              "price": 0.00
+            },
+            {
+              "name": "Fanta Guarana",
+              "price": 0.00
+            },
+            {
+              "name": "Guarana Antartica",
+              "price": 0.00
+            },
+            {
+              "name": "Sprite",
+              "price": 0.00
+            },
+            {
+              "name": "Pepsi",
+              "price": 0.00
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
