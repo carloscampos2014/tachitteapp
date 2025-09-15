@@ -1,40 +1,62 @@
-name: Deploy Blazor to GitHub Pages
+name: Deploy
 
 on:
   push:
-    branches:
-      - master # Altere para o seu branch principal, se necessário
+    branchs: ["master"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  build_and_deploy:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup .NET SDK
+      - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: 8.0.x
 
-      # Adicione esta nova etapa para instalar as ferramentas de otimização
-      - name: Install Blazor WebAssembly Workload
+
+      - name: Install .NET Wasm Tools
         run: dotnet workload install wasm-tools
 
-      - name: Restore dependencies
-        run: dotnet restore TachittesApp/TachittesApp.csproj
+      - name: Restore Dependencies
+        run: dotnet restore
 
-      - name: Publish Blazor WebAssembly
-        run: dotnet publish TachittesApp/TachittesApp.csproj -c Release
+      - name: Build
+        run: dotnet build -c Release --no-restore
 
-      - name: Adjust Base Path for GitHub Pages
-        run: |
-          REPO_NAME=$(echo ${{ github.repository }} | cut -d '/' -f 2)
-          sed -i "s/<base href=\"\\/\" \\/>/<base href=\"\\/${REPO_NAME}\\/\" \\/>/g" TachittesApp/bin/Release/net8.0/publish/wwwroot/index.html
-          sed -i "s|const base = \"/\";|const base = \"/${REPO_NAME}/\";|g" TachittesApp/bin/Release/net8.0/publish/wwwroot/service-worker.published.js
+      - name: Publish .NET
+        run: dotnet publish . -c:Release -o docs --nologo
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Copy index.html to 404.html
+        run: cp docs/wwwroot/index.html docs/wwwroot/404.html
+
+      - name: Add .nojekyll file
+        run: touch docs/wwwroot/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload
+        uses: actions/upload-pages-artifact@v3
         with:
-          branch: gh-pages
-          folder: TachittesApp/bin/Release/net8.0/publish/wwwroot
+          path: 'docs/wwwroot'
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
