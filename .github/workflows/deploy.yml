@@ -1,0 +1,39 @@
+name: Deploy Blazor to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Altere para o nome do seu branch principal se for diferente
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x' # Versão do .NET especificada no TachittesApp.csproj
+
+      - name: Restore dependencies
+        run: dotnet restore TachittesApp/TachittesApp.csproj
+
+      - name: Publish Blazor WebAssembly
+        run: dotnet publish TachittesApp/TachittesApp.csproj -c Release -o public/tachittesapp
+
+      - name: Adjust Base Path for GitHub Pages
+        run: |
+          REPO_NAME=$(echo ${{ github.repository }} | cut -d '/' -f 2)
+          sed -i "s|<base href=\"/\" />|<base href=\"/${REPO_NAME}/\" />|g" ./public/tachittesapp/index.html
+          sed -i "s|builder.HostEnvironment.BaseAddress|builder.HostEnvironment.BaseAddress = \"/${REPO_NAME}/\" //|g" ./public/tachittesapp/service-worker-assets.js
+          sed -i "s|const base = \"/\";|const base = \"/${REPO_NAME}/\";|g" ./public/tachittesapp/service-worker.published.js
+          sed -i "s|base href=\"/\"|base href=\"/${REPO_NAME}/\"|g" ./public/tachittesapp/blazor.webassembly.js
+          sed -i "s|base href=\'/\'|base href=\'/${REPO_NAME}/\'|g" ./public/tachittesapp/blazor.webassembly.js
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: public/tachittesapp
