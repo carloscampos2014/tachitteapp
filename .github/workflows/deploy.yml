@@ -43,6 +43,11 @@ jobs:
       - name: Publish .NET
         run: dotnet publish . -c:Release -o docs --nologo
 
+      - name: Adjust Base Path
+        run: |
+          REPO_NAME=$(echo ${{ github.repository }} | cut -d '/' -f 2)
+          sed -i "s|<base href=\"/\" />|<base href=\"/${REPO_NAME}/\" />|g" docs/wwwroot/index.html
+
       - name: Copy index.html to 404.html
         run: cp docs/wwwroot/index.html docs/wwwroot/404.html
 
