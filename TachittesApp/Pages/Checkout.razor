@@ -16,15 +16,15 @@
     }
 
     <div class="flex justify-center mt-6">
-        <button @onclick="NavigateToMenu" class="bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-600 transition-colors">
+        <button @onclick="NavigateToHome" class="bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-600 transition-colors">
             Voltar ao Menu
         </button>
     </div>
 </div>
 
 @code {
-    private void NavigateToMenu()
+    private void NavigateToHome()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo(NavigationManager.BaseUri);
     }
 }

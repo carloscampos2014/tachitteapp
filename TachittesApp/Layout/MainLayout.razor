@@ -1,12 +1,13 @@
 ﻿@inherits LayoutComponentBase
 @inject CartService CartService
+@inject NavigationManager NavigationManager
 
 <div class="bg-red-50 min-h-screen flex flex-col">
     <header class="header-bg text-white p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="/">
+            <button class="bg-transparent border-none p-0" @onclick="NavigateToHome">
                 <h1 class="text-3xl font-bold text-white text-tachitte hover:underline cursor-pointer">Tachitte</h1>
-            </a>
+            </button>
             <div class="relative" @onmouseover="ShowCart" @onmouseout="HideCart">
                 <button id="cart-button"
                         class="p-2 relative rounded-full hover:bg-red-600 transition-colors"
@@ -37,7 +38,6 @@
         Este site, incluindo todos os produtos e o restaurante Tachitte, é fictício e foi criado apenas para fins de
         demonstração.
     </div>
-
 </div>
 
 @code {
@@ -75,6 +75,11 @@
         {
             isCartVisible = false;
         }
+    }
+
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo(NavigationManager.BaseUri);
     }
 
     public void Dispose()
