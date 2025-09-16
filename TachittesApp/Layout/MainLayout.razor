@@ -1,13 +1,16 @@
-﻿@using TachittesApp.Services
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 @inject CartService CartService
 
 <div class="bg-red-50 min-h-screen flex flex-col">
     <header class="header-bg text-white p-4 shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-white text-tachitte">Tachitte</h1>
-            <div class="relative">
-                <button id="cart-button" class="p-2 relative rounded-full hover:bg-red-600 transition-colors">
+            <a href="/">
+                <h1 class="text-3xl font-bold text-white text-tachitte hover:underline cursor-pointer">Tachitte</h1>
+            </a>
+            <div class="relative" @onmouseover="ShowCart" @onmouseout="HideCart">
+                <button id="cart-button"
+                        class="p-2 relative rounded-full hover:bg-red-600 transition-colors"
+                        @onclick="ToggleStickyCart">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                          class="lucide lucide-shopping-cart">
@@ -18,6 +21,10 @@
                     <span id="cart-count"
                           class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 transform translate-x-1/2 -translate-y-1/2 bg-white rounded-full">@CartService.Items.Count</span>
                 </button>
+                @if (isCartVisible)
+                {
+                    <CartPopup OnClose="CloseStickyCart" />
+                }
             </div>
         </div>
     </header>
@@ -34,9 +41,40 @@
 </div>
 
 @code {
+    private bool isCartVisible;
+    private bool isCartSticky = false;
+
     protected override void OnInitialized()
     {
         CartService.OnChange += StateHasChanged;
+    }
+
+    private void ToggleStickyCart()
+    {
+        isCartSticky = !isCartSticky;
+        isCartVisible = isCartSticky;
+    }
+
+    private void CloseStickyCart()
+    {
+        isCartSticky = false;
+        isCartVisible = false;
+    }
+
+    private void ShowCart()
+    {
+        if (!isCartSticky)
+        {
+            isCartVisible = true;
+        }
+    }
+
+    private void HideCart()
+    {
+        if (!isCartSticky)
+        {
+            isCartVisible = false;
+        }
     }
 
     public void Dispose()

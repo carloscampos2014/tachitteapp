@@ -92,6 +92,7 @@ public class CartItem
 {
     public Item Item { get; set; } = new Item();
     public List<Option> Customizations { get; set; } = new List<Option>();
+    public int Quantity { get; set; } = 1;
 
-    public decimal TotalPrice => Item.Price + Customizations.Sum(o => o.Price);
+    public decimal TotalPrice => (Item.Price + Customizations.Sum(o => o.Price)) * Quantity;
 }

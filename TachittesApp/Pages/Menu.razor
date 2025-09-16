@@ -20,36 +20,6 @@
     </div>
 </div>
 
-<div class="bg-white p-4 rounded-lg shadow-md mb-6">
-    <h2 class="text-xl font-bold mb-4 text-red-600 text-center">Escolha a opção de pedido</h2>
-    <div class="flex space-x-4">
-        <button id="delivery-option"
-                class="flex-1 flex items-center justify-center py-3 px-4 rounded-lg font-bold text-white bg-red-400 hover:bg-red-500 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                 class="lucide lucide-truck mr-2">
-                <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
-                <path d="M15 18h6" />
-                <path d="M22 13V6a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v7" />
-                <path d="M7.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
-                <path d="M17.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
-            </svg>
-            Entrega
-        </button>
-        <button id="pickup-option"
-                class="flex-1 flex items-center justify-center py-3 px-4 rounded-lg font-bold text-white bg-red-500 hover:bg-red-600 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                 class="lucide lucide-shopping-bag mr-2">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                <line x1="3" x2="21" y1="6" y2="6" />
-                <path d="M16 10a4 4 0 0 1-8 0" />
-            </svg>
-            Retirar
-        </button>
-    </div>
-</div>
-
 <div class="bg-white rounded-lg shadow-md mb-6">
     <div class="flex border-b border-red-300">
         @if (menuData != null)
@@ -76,7 +46,7 @@
                 var item = menuData.Items.FirstOrDefault(i => i.Id == itemId);
                 if (item != null)
                 {
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden p-4 flex flex-col justify-between">
+                    <div @onclick="() => OpenCustomizationModal(item)" class="bg-white rounded-lg shadow-md overflow-hidden p-4 flex flex-col justify-between cursor-pointer transition-transform transform hover:scale-105">
                         <div class="flex-shrink-0 mb-4">
                             <img src="@($"img/{item.Image}")" alt="@item.Name" class="w-full h-52 object-cover rounded-md mb-4 menu-item-image" onerror="this.onerror=null;this.src='https://placehold.co/400x300/E5E7EB/6B7280?text=Sem+imagem';" />
                             <h3 class="text-lg font-bold text-red-900">@item.Name</h3>
@@ -86,7 +56,7 @@
                             <span class="text-xl font-bold text-red-600">
                                 @(item.Price == 0 ? "Grátis" : item.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR")))
                             </span>
-                            <button @onclick="() => OpenCustomizationModal(item)" class="add-to-cart-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center">
+                            <button @onclick:stopPropagation="true" class="add-to-cart-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                      class="lucide lucide-plus">
