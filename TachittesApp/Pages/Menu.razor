@@ -9,10 +9,10 @@
 
 <div class="bg-white p-4 rounded-lg shadow-md mb-6">
     <h2 class="text-2xl font-bold mb-2 text-red-600 text-center">O que são Tachittes?</h2>
-    <div class="about-tachitte">
-        <img src="img/tradicional.png" alt="Tachitte Tradicional" class="w-full md:w-auto h-auto object-cover rounded-md flex-shrink-0" />
+    <div class="about-tachitte md:flex md:items-center md:gap-4">
+        <img src="img/tradicional.png" alt="Tachitte Tradicional" class="w-full h-auto object-cover rounded-md mb-4 md:mb-0 md:w-auto" />
         <p class="text-red-800 leading-relaxed text-center md:text-left">
-            Descubra o Tachitte, a nossa versão aprimorada do sushi! Mais do que um simples enrolado, o Tachitte
+            Descubra o Tachitte, a nossa versão aprimorada do sushi! <b>Mais do que um simples enrolado</b>, o Tachitte
             é uma experiência completa: <b>maior</b>, <b>mais recheado</b> e irresistivelmente saboroso. Nossa
             receita base é feita com <b>arroz</b>, <b>alga</b>, <b>cenoura</b> e uma proteína suculenta, criando
             a tela perfeita para as mais variadas combinações de sabores. Venha se surpreender!
@@ -21,13 +21,13 @@
 </div>
 
 <div class="bg-white rounded-lg shadow-md mb-6">
-    <div class="flex border-b border-red-300">
+    <div class="flex border-b border-red-300 overflow-x-auto hide-scrollbar">
         @if (menuData != null)
         {
             @foreach (var category in menuData.Categories)
             {
                 <button @onclick="() => selectedCategory = category"
-                        class="tab-button flex-1 py-3 px-4 text-center text-red-800 hover:bg-red-50 transition-colors rounded-t-lg
+                        class="tab-button flex-shrink-0 py-3 px-4 text-center text-red-800 hover:bg-red-50 transition-colors rounded-t-lg
                                                @(selectedCategory == category ? "active" : "")">
                     @category.Name
                 </button>
