@@ -50,7 +50,7 @@ jobs:
           FULL_PATH=${{ github.repository }}
           echo "Caminho base completo: /$FULL_PATH/"
           sed -i "s|<base href=\"/\" />|<base href=\"/${FULL_PATH}/\" />|g" docs/wwwroot/index.html
-          sed -i "s|const base = \"/\"|const base = \"/${FULL_PATH}/\"|g" docs/wwwroot/service-worker.published.js
+          sed -i "s|const base = \"/\"|const base = \"/${FULL_PATH}/\"|g" docs/wwwroot/service-worker.js
 
       - name: Add .nojekyll file
         run: touch docs/wwwroot/.nojekyll
