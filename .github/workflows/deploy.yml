@@ -30,7 +30,6 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-
       - name: Install .NET Wasm Tools
         run: dotnet workload install wasm-tools
 
@@ -47,9 +46,6 @@ jobs:
         run: |
           REPO_NAME=$(echo ${{ github.repository }} | cut -d '/' -f 2)
           sed -i "s|<base href=\"/\" />|<base href=\"/${REPO_NAME}/\" />|g" docs/wwwroot/index.html
-
-      - name: Copy index.html to 404.html
-        run: cp docs/wwwroot/index.html docs/wwwroot/404.html
 
       - name: Add .nojekyll file
         run: touch docs/wwwroot/.nojekyll

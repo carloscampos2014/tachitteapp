@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Redirecionando...</title>
+    <script type="text/javascript">
+        // Redireciona para o index.html com o caminho da URL para que o Blazor possa rotear.
+        (function() {
+            var redirect = sessionStorage.getItem('redirect');
+            if (redirect) {
+                sessionStorage.removeItem('redirect');
+                window.location.replace(redirect);
+            }
+        })();
+    </script>
+</head>
+<body>
+    <p>A página que você está procurando não foi encontrada. Redirecionando para a página principal...</p>
+</body>
+</html>
