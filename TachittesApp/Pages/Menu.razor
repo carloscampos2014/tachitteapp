@@ -1,8 +1,11 @@
 ﻿@page "/"
 @using System.Net.Http.Json
 @using TachittesApp.Models
+@using TachittesApp.Services
+@using TachittesApp.Shared
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
+@inject CartService CartService
 
 <div class="bg-white p-4 rounded-lg shadow-md mb-6">
     <h2 class="text-2xl font-bold mb-2 text-red-600 text-center">O que são Tachittes?</h2>
@@ -55,7 +58,7 @@
             {
                 <button @onclick="() => selectedCategory = category"
                         class="tab-button flex-1 py-3 px-4 text-center text-red-800 hover:bg-red-50 transition-colors rounded-t-lg
-                                       @(selectedCategory == category ? "active" : "")">
+                                               @(selectedCategory == category ? "active" : "")">
                     @category.Name
                 </button>
             }
@@ -80,8 +83,10 @@
                             <p class="text-sm text-red-400 min-h-[40px]">@item.Description</p>
                         </div>
                         <div class="flex items-center justify-between mt-auto">
-                            <span class="text-xl font-bold text-red-600">@item.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
-                            <button class="add-to-cart-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center">
+                            <span class="text-xl font-bold text-red-600">
+                                @(item.Price == 0 ? "Grátis" : item.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR")))
+                            </span>
+                            <button @onclick="() => OpenCustomizationModal(item)" class="add-to-cart-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                      class="lucide lucide-plus">
@@ -97,10 +102,16 @@
     }
 </div>
 
+<CustomizationModal @bind-IsVisible="isModalVisible"
+                    ItemToCustomize="itemToCustomize"
+                    CustomizationGroups="menuData?.CustomizationSteps"
+                    OnClose="CloseCustomizationModal" />
+
 @code {
     private MenuData? menuData;
     private Category? selectedCategory;
-    private Dictionary<string, object> iconMap = new Dictionary<string, object>();
+    private bool isModalVisible = false;
+    private Item? itemToCustomize;
 
     protected override async Task OnInitializedAsync()
     {
@@ -114,6 +125,18 @@
             Console.WriteLine($"Erro ao carregar os dados: {ex.Message}");
             menuData = null;
         }
+    }
+
+    private void OpenCustomizationModal(Item item)
+    {
+        itemToCustomize = item;
+        isModalVisible = true;
+    }
+
+    private void CloseCustomizationModal()
+    {
+        isModalVisible = false;
+        itemToCustomize = null;
     }
 
     private void SelectCategory(Category category)

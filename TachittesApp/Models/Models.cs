@@ -47,6 +47,9 @@ public class Item
 
     [JsonPropertyName("price")]
     public decimal Price { get; set; }
+
+    [JsonPropertyName("category")]
+    public string Category { get; set; } = string.Empty;
 }
 
 public class CustomizationGroup
@@ -65,6 +68,12 @@ public class CustomizationStep
 {
     [JsonPropertyName("stepName")]
     public string StepName { get; set; } = string.Empty;
+
+    [JsonPropertyName("selectionType")]
+    public string SelectionType { get; set; } = string.Empty;
+
+    [JsonPropertyName("limit")]
+    public int? Limit { get; set; }
 
     [JsonPropertyName("options")]
     public List<Option> Options { get; set; } = new List<Option>();

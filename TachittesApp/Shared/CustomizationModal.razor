@@ -1,0 +1,211 @@
+﻿@using System.Text.Json.Serialization
+@using TachittesApp.Models
+@using TachittesApp.Services
+@inject CartService CartService
+
+@if (IsVisible)
+{
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+
+            @* Cabeçalho fixo *@
+            <div class="sticky top-0 bg-white p-6 rounded-t-lg z-10 border-b border-red-300">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-red-600">Personalizar: @ItemToCustomize?.Name</h2>
+                    <button @onclick="Close" class="text-red-500 hover:text-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            @if (ItemToCustomize != null)
+            {
+                @* Conteúdo que rola *@
+                <div class="overflow-y-auto flex-grow p-6 space-y-4 hide-scrollbar">
+                    @foreach (var step in relevantCustomizationSteps)
+                    {
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-red-800 mb-2">@step.StepName</h4>
+
+                            @if (step.SelectionType == "single")
+                            {
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    @foreach (var option in step.Options)
+                                    {
+                                        <label @onclick="() => SelectSingleOption(step.StepName, option)"
+                                               class="flex items-center justify-between border-2 rounded-lg p-4 cursor-pointer transition-colors duration-200
+                                                                          @(selectedSingleOptions.ContainsKey(step.StepName) && selectedSingleOptions[step.StepName] == option ? "bg-red-50 border-red-500" : "bg-white border-transparent hover:bg-red-100")">
+                                            <div class="flex items-center space-x-2">
+                                                <input type="radio"
+                                                       name="@step.StepName"
+                                                       checked="@(selectedSingleOptions.ContainsKey(step.StepName) && selectedSingleOptions[step.StepName] == option)"
+                                                       class="form-radio text-red-600 cursor-pointer" />
+                                                <span class="text-red-800 font-medium">@option.Name</span>
+                                            </div>
+                                            <span class="text-red-600 font-bold">
+                                                @(option.Price == 0 ? "Grátis" : option.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR")))
+                                            </span>
+                                        </label>
+                                    }
+                                </div>
+                            }
+                            else if (step.SelectionType == "multiple")
+                            {
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    @foreach (var option in step.Options)
+                                    {
+                                        <label class="flex items-center justify-between border-2 rounded-lg p-4 cursor-pointer transition-colors duration-200
+                                                                          @(selectedMultiOptions.Contains(option) ? "bg-red-50 border-red-500" : "bg-white border-transparent hover:bg-red-100")
+                                                                          @(step.Limit.HasValue && selectedMultiOptions.Count >= step.Limit && !selectedMultiOptions.Contains(option) ? "opacity-50 cursor-not-allowed" : "")">
+                                            <div class="flex items-center space-x-2">
+                                                <input type="checkbox"
+                                                       @onchange="e => ToggleMultiSelectOption(step, option, e)"
+                                                       checked="@selectedMultiOptions.Contains(option)"
+                                                       disabled="@(step.Limit.HasValue && selectedMultiOptions.Count >= step.Limit && !selectedMultiOptions.Contains(option))"
+                                                       class="form-checkbox text-red-600 rounded cursor-pointer disabled:cursor-not-allowed" />
+                                                <span class="text-red-800 font-medium">@option.Name</span>
+                                            </div>
+                                            <span class="text-red-600 font-bold">
+                                                @(option.Price == 0 ? "Grátis" : option.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR")))
+                                            </span>
+                                        </label>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+
+            @* Rodapé fixo *@
+            <div class="sticky bottom-0 bg-white p-6 rounded-b-lg z-10 border-t border-red-300">
+                <div class="flex justify-end items-center space-x-4">
+                    <span class="text-xl font-bold text-red-600">Total: @(currentPrice.ToString("C", new System.Globalization.CultureInfo("pt-BR")))</span>
+                    <button @onclick="AddToCart" class="bg-red-500 text-white py-3 px-4 rounded-lg font-bold hover:bg-red-600 transition-colors">
+                        Adicionar ao Carrinho
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+
+    [Parameter]
+    public Item? ItemToCustomize { get; set; }
+
+    [Parameter]
+    public List<CustomizationGroup> CustomizationGroups { get; set; } = new List<CustomizationGroup>();
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private List<CustomizationStep> relevantCustomizationSteps = new List<CustomizationStep>();
+    private Dictionary<string, Option> selectedSingleOptions = new Dictionary<string, Option>();
+    private List<Option> selectedMultiOptions = new List<Option>();
+    private decimal currentPrice;
+
+    protected override void OnParametersSet()
+    {
+        if (IsVisible && ItemToCustomize != null)
+        {
+            currentPrice = ItemToCustomize.Price;
+            selectedSingleOptions.Clear();
+            selectedMultiOptions.Clear();
+            relevantCustomizationSteps = GetRelevantCustomizationSteps(ItemToCustomize);
+
+            foreach (var step in relevantCustomizationSteps.Where(s => s.SelectionType == "single"))
+            {
+                var defaultOption = step.Options.FirstOrDefault();
+                if (defaultOption != null)
+                {
+                    selectedSingleOptions[step.StepName] = defaultOption;
+                    currentPrice += defaultOption.Price;
+                }
+            }
+        }
+    }
+
+    private void SelectSingleOption(string stepName, Option option)
+    {
+        if (selectedSingleOptions.ContainsKey(stepName))
+        {
+            currentPrice -= selectedSingleOptions[stepName].Price;
+        }
+
+        selectedSingleOptions[stepName] = option;
+        currentPrice += option.Price;
+    }
+
+    private void ToggleMultiSelectOption(CustomizationStep step, Option option, ChangeEventArgs e)
+    {
+        if (e.Value is bool isChecked && isChecked)
+        {
+            if (step.Limit.HasValue && selectedMultiOptions.Count >= step.Limit.Value)
+            {
+                // Limite atingido, não faz nada
+            }
+            else
+            {
+                selectedMultiOptions.Add(option);
+                currentPrice += option.Price;
+            }
+        }
+        else
+        {
+            selectedMultiOptions.Remove(option);
+            currentPrice -= option.Price;
+        }
+    }
+
+    private List<CustomizationStep> GetRelevantCustomizationSteps(Item item)
+    {
+        var steps = new List<CustomizationStep>();
+
+        var generalSteps = CustomizationGroups.FirstOrDefault(g => g.ProductType == "Tachittes")?.Steps;
+        if (generalSteps != null && item.Category.Contains("Tachittes"))
+        {
+            steps.AddRange(generalSteps);
+        }
+
+        var categoryCustomization = CustomizationGroups.FirstOrDefault(g => g.ProductType == item.Category);
+        if (categoryCustomization != null)
+        {
+            steps.AddRange(categoryCustomization.Steps);
+        }
+        return steps;
+    }
+
+    private void AddToCart()
+    {
+        if (ItemToCustomize != null)
+        {
+            var allCustomizations = selectedSingleOptions.Values.ToList();
+            allCustomizations.AddRange(selectedMultiOptions);
+
+            var cartItem = new CartItem
+            {
+                Item = ItemToCustomize,
+                Customizations = allCustomizations
+            };
+            CartService.AddItem(cartItem);
+        }
+        Close();
+    }
+
+    private void Close()
+    {
+        IsVisible = false;
+        ItemToCustomize = null;
+        OnClose.InvokeAsync();
+        IsVisibleChanged.InvokeAsync(false);
+    }
+}

@@ -37,133 +37,152 @@
       "name": "Tradicional",
       "description": "O sabor autêntico que deu origem ao Tachitte. Uma explosão de sabores frescos e tradicionais.",
       "image": "tradicional.png",
-      "price": 28.00
+      "price": 28.00,
+      "category": "Tachittes Salgados"
     },
     {
       "id": "bacon",
       "name": "Bacon",
       "description": "A receita tradicional com o toque defumado e crocante do bacon.",
       "image": "bacon.png",
-      "price": 31.00
+      "price": 31.00,
+      "category": "Tachittes Salgados"
     },
     {
       "id": "pepperone",
       "name": "Pepperone",
       "description": "Um toque de pimenta com o sabor inconfundível do pepperone fatiado.",
       "image": "pepperone.png",
-      "price": 30.50
+      "price": 30.50,
+      "category": "Tachittes Salgados"
     },
     {
       "id": "salsicha",
       "name": "Salsicha",
       "description": "A combinação perfeita da receita padrão com salsicha em fatias.",
       "image": "salsicha.png",
-      "price": 27.50
+      "price": 27.50,
+      "category": "Tachittes Salgados"
     },
     {
       "id": "queijo",
       "name": "Queijo",
       "description": "Para os amantes de queijo, nosso rolinho com mussarela picada, derretendo a cada mordida.",
       "image": "queijo.png",
-      "price": 29.00
+      "price": 29.00,
+      "category": "Tachittes Salgados"
     },
     {
       "id": "romeu-e-julieta",
       "name": "Romeu e Julieta",
       "description": "O clássico brasileiro, a doçura da goiabada se encontra com a suavidade do queijo mussarela.",
       "image": "romeu-e-julieta.png",
-      "price": 26.00
+      "price": 26.00,
+      "category": "Tachittes Doces"
     },
     {
       "id": "chocolate",
       "name": "Chocolate",
       "description": "Para os chocólatras de plantão: um recheio generoso de chocolate ao leite ou branco.",
       "image": "chocolate.png",
-      "price": 24.50
+      "price": 24.50,
+      "category": "Tachittes Doces"
     },
     {
       "id": "caramelo",
       "name": "Caramelo",
       "description": "A doçura e a textura do caramelo em um rolinho que vai te surpreender.",
       "image": "caramelo.png",
-      "price": 23.00
+      "price": 23.00,
+      "category": "Tachittes Doces"
     },
     {
       "id": "vegano",
       "name": "Vegano",
       "description": "A receita padrão vegana, feita com ingredientes frescos e cheia de sabor.",
       "image": "vegano.png",
-      "price": 29.50
+      "price": 29.50,
+      "category": "Tachittes Veganos"
     },
     {
       "id": "customizado",
       "name": "Customizado",
       "description": "Solte a sua criatividade e monte um Tachitte único, usando até 5 ingredientes da sua escolha.",
       "image": "customizado.png",
-      "price": 35.00
+      "price": 35.00,
+      "category": "Tachittes Customizados"
     },
     {
       "id": "suco-laranja",
       "name": "Suco de Laranja",
       "description": "O clássico refrescante e cheio de vitamina C.",
       "image": "suco-laranja.png",
-      "price": 8.00
+      "price": 8.00,
+      "category": "Sucos"
     },
     {
       "id": "suco-limao",
       "name": "Suco de Limão",
       "description": "O sabor cítrico e ácido para um momento revigorante.",
       "image": "suco-limao.png",
-      "price": 7.50
+      "price": 7.50,
+      "category": "Sucos"
     },
     {
       "id": "suco-tangerina",
       "name": "Suco de Tangerina",
       "description": "Um toque mais doce e delicado, ideal para qualquer hora.",
       "image": "suco-tangerina.png",
-      "price": 8.50
+      "price": 8.50,
+      "category": "Sucos"
     },
     {
       "id": "suco-morango",
       "name": "Suco de Morango",
       "description": "A doçura da fruta em um suco que é a cara do verão.",
       "image": "suco-morango.png",
-      "price": 9.00
+      "price": 9.00,
+      "category": "Sucos"
     },
     {
       "id": "suco-maca",
       "name": "Suco de Maçã",
       "description": "Um suco leve e delicioso, com o sabor suave da maçã.",
       "image": "suco-maca.png",
-      "price": 8.00
+      "price": 8.00,
+      "category": "Sucos"
     },
     {
       "id": "suco-uva",
       "name": "Suco de Uva",
       "description": "O sabor intenso e adocicado da uva, uma bebida clássica.",
       "image": "suco-uva.png",
-      "price": 8.50
+      "price": 8.50,
+      "category": "Sucos"
     },
     {
       "id": "refri-lata",
       "name": "Refrigerante Lata",
       "description": "A praticidade e o sabor do seu refrigerante preferido em lata.",
       "image": "refri-lata.png",
-      "price": 6.00
+      "price": 6.00,
+      "category": "Refrigerantes"
     },
     {
       "id": "refri-600ml",
       "name": "Refrigerante 600ml",
       "description": "Perfeito para matar a sede em qualquer momento.",
       "image": "refri-600ml.png",
-      "price": 9.00
+      "price": 9.00,
+      "category": "Refrigerantes"
     },
     {
       "id": "refri-2l",
       "name": "Refrigerante 2L",
       "description": "Para compartilhar com a galera ou ter em casa.",
       "image": "refri-2l.png",
-      "price": 12.00
+      "price": 12.00,
+      "category": "Refrigerantes"
     }
   ],
   "customizationSteps": [
@@ -173,6 +192,8 @@
       "steps": [
         {
           "stepName": "Escolha o Enrolador",
+          "selectionType": "single",
+          "limit": null,
           "options": [
             {
               "name": "Alga",
@@ -190,6 +211,8 @@
         },
         {
           "stepName": "Escolha a Massa",
+          "selectionType": "single",
+          "limit": null,
           "options": [
             {
               "name": "Arroz Agulinha",
@@ -207,6 +230,8 @@
         },
         {
           "stepName": "Escolha o Tamanho",
+          "selectionType": "single",
+          "limit": null,
           "options": [
             {
               "name": "Pequeno (6cm)",
@@ -230,6 +255,8 @@
       "steps": [
         {
           "stepName": "Escolha a Proteína",
+          "selectionType": "single",
+          "limit": null,
           "options": [
             {
               "name": "File de Peito de frango",
@@ -259,6 +286,8 @@
         },
         {
           "stepName": "Adicione um Molho Salgado",
+          "selectionType": "multiple",
+          "limit": null,
           "options": [
             {
               "name": "Gergelim Preto",
@@ -290,6 +319,8 @@
       "steps": [
         {
           "stepName": "Escolha a Proteína",
+          "selectionType": "single",
+          "limit": null,
           "options": [
             {
               "name": "Tofu",
@@ -307,6 +338,8 @@
         },
         {
           "stepName": "Adicione um Molho Salgado",
+          "selectionType": "multiple",
+          "limit": null,
           "options": [
             {
               "name": "Gergelim Preto",
@@ -338,6 +371,8 @@
       "steps": [
         {
           "stepName": "Escolha a Proteína",
+          "selectionType": "single",
+          "limit": null,
           "options": [
             {
               "name": "File de Peito de frango",
@@ -379,6 +414,8 @@
         },
         {
           "stepName": "Adicione um Molho Salgado",
+          "selectionType": "multiple",
+          "limit": null,
           "options": [
             {
               "name": "Gergelim Preto",
@@ -404,6 +441,8 @@
         },
         {
           "stepName": "Escolha até 5 Ingredientes Adicionais",
+          "selectionType": "multiple",
+          "limit": 5,
           "options": [
             {
               "name": "Bacon",
@@ -459,6 +498,8 @@
       "steps": [
         {
           "stepName": "Adicione um Molho Doce",
+          "selectionType": "multiple",
+          "limit": null,
           "options": [
             {
               "name": "Calda de Chocolate ao Leite",
@@ -498,6 +539,8 @@
       "steps": [
         {
           "stepName": "Escolha a Base",
+          "selectionType": "single",
+          "limit": null,
           "options": [
             {
               "name": "Água",
@@ -517,6 +560,8 @@
       "steps": [
         {
           "stepName": "Escolha a Marca e Tamanho",
+          "selectionType": "single",
+          "limit": null,
           "options": [
             {
               "name": "Coca-Cola",
