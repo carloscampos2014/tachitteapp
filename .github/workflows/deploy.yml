@@ -44,8 +44,8 @@ jobs:
 
       - name: Adjust Base Path
         run: |
-          REPO_NAME=$(echo ${{ github.repository }} | cut -d '/' -f 2)
-          sed -i "s|<base href=\"/\" />|<base href=\"/${REPO_NAME}/\" />|g" docs/wwwroot/index.html
+          FULL_PATH=${{ github.repository }}
+          sed -i "s|<base href=\"/\" />|<base href=\"/${FULL_PATH}/\" />|g" docs/wwwroot/index.html
 
       - name: Add .nojekyll file
         run: touch docs/wwwroot/.nojekyll
