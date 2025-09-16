@@ -41,13 +41,14 @@ jobs:
 
       - name: Publish .NET
         run: dotnet publish TachittesApp -c:Release -o docs --nologo
-      
-      - name: Listar arquivos publicados para depuração
-        run: ls -R docs/wwwroot
 
       - name: Adjust Base Path
         run: |
-          FULL_PATH=${{ github.repository }}
+          OWNER=$(echo "${{ github.repository }}" | cut -d '/' -f 1)
+          echo "Nome do proprietário: $OWNER"
+          REPO_NAME=$(echo "${{ github.repository }}" | cut -d '/' -f 2)
+          echo "Nome do repositório: $REPO_NAME"
+          FULL_PATH="${OWNER}.github.io/${REPO_NAME}"
           echo "Caminho base completo: /$FULL_PATH/"
           sed -i "s|<base href=\"/\" />|<base href=\"/${FULL_PATH}/\" />|g" docs/wwwroot/index.html
           sed -i "s|const base = \"/\"|const base = \"/${FULL_PATH}/\"|g" docs/wwwroot/service-worker.js
