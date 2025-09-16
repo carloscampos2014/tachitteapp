@@ -41,6 +41,9 @@ jobs:
 
       - name: Publish .NET
         run: dotnet publish TachittesApp -c:Release -o docs --nologo
+      
+      - name: Listar arquivos publicados para depuração
+        run: ls -R docs/wwwroot
 
       - name: Adjust Base Path
         run: |
