@@ -14,6 +14,21 @@ public class MenuData
 
     [JsonPropertyName("customizationSteps")]
     public List<CustomizationGroup> CustomizationSteps { get; set; } = new List<CustomizationGroup>();
+
+    [JsonPropertyName("deliveryFee")]
+    public decimal DeliveryFee { get; set; }
+
+    [JsonPropertyName("whatsappNumber")]
+    public string WhatsappNumber { get; set; } = string.Empty;
+
+    [JsonPropertyName("pixKey")]
+    public string PixKey { get; set; } = string.Empty;
+
+    [JsonPropertyName("pixName")]
+    public string PixName { get; set; } = string.Empty;
+
+    [JsonPropertyName("pixCity")]
+    public string PixCity { get; set; } = string.Empty;
 }
 
 public class Category
@@ -95,4 +110,23 @@ public class CartItem
     public int Quantity { get; set; } = 1;
 
     public decimal TotalPrice => (Item.Price + Customizations.Sum(o => o.Price)) * Quantity;
+}
+
+public class Order
+{
+    public string CustomerName { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;
+    public string DeliveryOption { get; set; } = "Entrega"; // 'Entrega' or 'Retirada'
+    public Address? DeliveryAddress { get; set; }
+    public string PaymentMethod { get; set; } = "Dinheiro"; // 'Dinheiro', 'PIX', 'Cartões'
+    public string CardType { get; set; } = "Crédito"; // 'Débito', 'Crédito', 'Refeição', 'Alimentação'
+    public decimal ChangeValue { get; set; } = 0;
+}
+
+public class Address
+{
+    public string Street { get; set; } = string.Empty;
+    public string Number { get; set; } = string.Empty;
+    public string Neighborhood { get; set; } = string.Empty;
+    public string ReferencePoint { get; set; } = string.Empty;
 }

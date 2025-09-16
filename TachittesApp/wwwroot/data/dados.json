@@ -187,417 +187,66 @@
   ],
   "customizationSteps": [
     {
-      "productType": "Tachittes",
-      "description": "Passos de customização para todos os tipos de Tachittes.",
-      "steps": [
+      "stepName": "Escolha o Enrolador",
+      "selectionType": "single",
+      "limit": null,
+      "options": [
         {
-          "stepName": "Escolha o Enrolador",
-          "selectionType": "single",
-          "limit": null,
-          "options": [
-            {
-              "name": "Alga",
-              "price": 0.00
-            },
-            {
-              "name": "Soy Papper Verde",
-              "price": 0.00
-            },
-            {
-              "name": "Massa de Pastel",
-              "price": 0.00
-            }
-          ]
+          "name": "Alga",
+          "price": 0.00
         },
         {
-          "stepName": "Escolha a Massa",
-          "selectionType": "single",
-          "limit": null,
-          "options": [
-            {
-              "name": "Arroz Agulinha",
-              "price": 0.00
-            },
-            {
-              "name": "Arroz Integral",
-              "price": 0.00
-            },
-            {
-              "name": "Arroz Sushi",
-              "price": 0.00
-            }
-          ]
+          "name": "Soy Papper Verde",
+          "price": 0.00
         },
         {
-          "stepName": "Escolha o Tamanho",
-          "selectionType": "single",
-          "limit": null,
-          "options": [
-            {
-              "name": "Pequeno (6cm)",
-              "price": 0.00
-            },
-            {
-              "name": "Medio (8cm)",
-              "price": 2.00
-            },
-            {
-              "name": "Grande (12cm)",
-              "price": 5.00
-            }
-          ]
+          "name": "Massa de Pastel",
+          "price": 0.00
         }
       ]
     },
     {
-      "productType": "Tachittes Salgados",
-      "description": "Customizações adicionais para os Tachittes Salgados.",
-      "steps": [
+      "stepName": "Escolha a Massa",
+      "selectionType": "single",
+      "limit": null,
+      "options": [
         {
-          "stepName": "Escolha a Proteína",
-          "selectionType": "single",
-          "limit": null,
-          "options": [
-            {
-              "name": "File de Peito de frango",
-              "price": 0.00
-            },
-            {
-              "name": "Atum",
-              "price": 0.00
-            },
-            {
-              "name": "Patinho",
-              "price": 1.50
-            },
-            {
-              "name": "Contra-File",
-              "price": 2.00
-            },
-            {
-              "name": "Salmão",
-              "price": 4.00
-            },
-            {
-              "name": "Camarão",
-              "price": 5.00
-            }
-          ]
+          "name": "Arroz Agulinha",
+          "price": 0.00
         },
         {
-          "stepName": "Adicione um Molho Salgado",
-          "selectionType": "multiple",
-          "limit": null,
-          "options": [
-            {
-              "name": "Gergelim Preto",
-              "price": 3.00
-            },
-            {
-              "name": "Cebolinha Picada",
-              "price": 2.50
-            },
-            {
-              "name": "Cream Cheese",
-              "price": 4.00
-            },
-            {
-              "name": "Molho Teriyaki",
-              "price": 3.50
-            },
-            {
-              "name": "Molho Shoyo",
-              "price": 2.50
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "productType": "Tachittes Veganos",
-      "description": "Customizações adicionais para os Tachittes Veganos.",
-      "steps": [
-        {
-          "stepName": "Escolha a Proteína",
-          "selectionType": "single",
-          "limit": null,
-          "options": [
-            {
-              "name": "Tofu",
-              "price": 0.00
-            },
-            {
-              "name": "Cogumelos (Shimeji ou Shiitake)",
-              "price": 3.00
-            },
-            {
-              "name": "\"Carne\" de Jaca Verde",
-              "price": 2.50
-            }
-          ]
+          "name": "Arroz Integral",
+          "price": 0.00
         },
         {
-          "stepName": "Adicione um Molho Salgado",
-          "selectionType": "multiple",
-          "limit": null,
-          "options": [
-            {
-              "name": "Gergelim Preto",
-              "price": 3.00
-            },
-            {
-              "name": "Cebolinha Picada",
-              "price": 2.50
-            },
-            {
-              "name": "Cream Cheese",
-              "price": 4.00
-            },
-            {
-              "name": "Molho Teriyaki",
-              "price": 3.50
-            },
-            {
-              "name": "Molho Shoyo",
-              "price": 2.50
-            }
-          ]
+          "name": "Arroz Sushi",
+          "price": 0.00
         }
       ]
     },
     {
-      "productType": "Tachittes Customizados",
-      "description": "Personalize seu Tachitte do seu jeito!",
-      "steps": [
+      "stepName": "Escolha o Tamanho",
+      "selectionType": "single",
+      "limit": null,
+      "options": [
         {
-          "stepName": "Escolha a Proteína",
-          "selectionType": "single",
-          "limit": null,
-          "options": [
-            {
-              "name": "File de Peito de frango",
-              "price": 0.00
-            },
-            {
-              "name": "Atum",
-              "price": 0.00
-            },
-            {
-              "name": "Tofu",
-              "price": 0.00
-            },
-            {
-              "name": "Patinho",
-              "price": 1.50
-            },
-            {
-              "name": "Contra-File",
-              "price": 2.00
-            },
-            {
-              "name": "\"Carne\" de Jaca Verde",
-              "price": 2.50
-            },
-            {
-              "name": "Cogumelos (Shimeji ou Shiitake)",
-              "price": 3.00
-            },
-            {
-              "name": "Salmão",
-              "price": 4.00
-            },
-            {
-              "name": "Camarão",
-              "price": 5.00
-            }
-          ]
+          "name": "Pequeno (6cm)",
+          "price": 0.00
         },
         {
-          "stepName": "Adicione um Molho Salgado",
-          "selectionType": "multiple",
-          "limit": null,
-          "options": [
-            {
-              "name": "Gergelim Preto",
-              "price": 3.00
-            },
-            {
-              "name": "Cebolinha Picada",
-              "price": 2.50
-            },
-            {
-              "name": "Cream Cheese",
-              "price": 4.00
-            },
-            {
-              "name": "Molho Teriyaki",
-              "price": 3.50
-            },
-            {
-              "name": "Molho Shoyo",
-              "price": 2.50
-            }
-          ]
+          "name": "Medio (8cm)",
+          "price": 2.00
         },
         {
-          "stepName": "Escolha até 5 Ingredientes Adicionais",
-          "selectionType": "multiple",
-          "limit": 5,
-          "options": [
-            {
-              "name": "Bacon",
-              "price": 4.00
-            },
-            {
-              "name": "Pepperone",
-              "price": 3.50
-            },
-            {
-              "name": "Salsicha",
-              "price": 2.50
-            },
-            {
-              "name": "Queijo",
-              "price": 3.00
-            },
-            {
-              "name": "Goiabada",
-              "price": 2.00
-            },
-            {
-              "name": "Chocolate ao leite",
-              "price": 3.00
-            },
-            {
-              "name": "Chocolate branco",
-              "price": 3.00
-            },
-            {
-              "name": "Caramelo",
-              "price": 2.50
-            },
-            {
-              "name": "Granulado",
-              "price": 2.00
-            },
-            {
-              "name": "Coco Ralado",
-              "price": 2.00
-            },
-            {
-              "name": "Cenoura",
-              "price": 1.50
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "productType": "Tachittes Doces",
-      "description": "Customizações adicionais para os Tachittes Doces.",
-      "steps": [
-        {
-          "stepName": "Adicione um Molho Doce",
-          "selectionType": "multiple",
-          "limit": null,
-          "options": [
-            {
-              "name": "Calda de Chocolate ao Leite",
-              "price": 4.50
-            },
-            {
-              "name": "Calda de Chocolate Branco",
-              "price": 4.50
-            },
-            {
-              "name": "Calda de Morango",
-              "price": 4.00
-            },
-            {
-              "name": "Nutella",
-              "price": 5.00
-            },
-            {
-              "name": "Leite Condensado",
-              "price": 3.50
-            },
-            {
-              "name": "Granulado",
-              "price": 2.00
-            },
-            {
-              "name": "Coco Ralado",
-              "price": 2.50
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "productType": "Sucos",
-      "description": "Customizações para os Sucos.",
-      "steps": [
-        {
-          "stepName": "Escolha a Base",
-          "selectionType": "single",
-          "limit": null,
-          "options": [
-            {
-              "name": "Água",
-              "price": 0.00
-            },
-            {
-              "name": "Leite",
-              "price": 2.00
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "productType": "Refrigerantes",
-      "description": "Customizações para os Refrigerantes.",
-      "steps": [
-        {
-          "stepName": "Escolha a Marca e Tamanho",
-          "selectionType": "single",
-          "limit": null,
-          "options": [
-            {
-              "name": "Coca-Cola",
-              "price": 0.00
-            },
-            {
-              "name": "Coca-Cola Zero",
-              "price": 0.00
-            },
-            {
-              "name": "Fanta Laranja",
-              "price": 0.00
-            },
-            {
-              "name": "Fanta Uva",
-              "price": 0.00
-            },
-            {
-              "name": "Fanta Guarana",
-              "price": 0.00
-            },
-            {
-              "name": "Guarana Antartica",
-              "price": 0.00
-            },
-            {
-              "name": "Sprite",
-              "price": 0.00
-            },
-            {
-              "name": "Pepsi",
-              "price": 0.00
-            }
-          ]
+          "name": "Grande (12cm)",
+          "price": 5.00
         }
       ]
     }
-  ]
+  ],
+  "deliveryFee": 5.00,
+  "whatsappNumber": "5511996747477",
+  "pixKey": "+5511996747477",
+  "pixName": "Carlos Campos",
+  "pixCity": "Guarulhos"
 }
