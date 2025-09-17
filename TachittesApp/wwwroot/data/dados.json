@@ -443,6 +443,7 @@
           "stepName": "Escolha até 5 Ingredientes Adicionais",
           "selectionType": "multiple",
           "limit": 5,
+          "minRequired": 1,
           "options": [
             {
               "name": "Bacon",

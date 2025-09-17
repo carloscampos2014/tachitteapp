@@ -27,30 +27,42 @@ public class OrderService
     public string GenerateWhatsAppMessage(CartService cartService)
     {
         var sb = new StringBuilder();
-        sb.AppendLine("Olá! Gostaria de fazer um pedido:");
+        sb.AppendLine("*NOVO PEDIDO TACHITTE*");
+        sb.AppendLine();
+
+        sb.AppendLine("*CLIENTE*");
         sb.AppendLine($"Nome: {CurrentOrder.CustomerName}");
         sb.AppendLine($"Telefone: {CurrentOrder.PhoneNumber}");
-        sb.AppendLine();
-        sb.AppendLine("--- Detalhes do Pedido ---");
 
+        if (CurrentOrder.DeliveryOption == "Entrega")
+        {
+            sb.AppendLine($"Endereço: {CurrentOrder.DeliveryAddress.Street}");
+            if (!string.IsNullOrWhiteSpace(CurrentOrder.DeliveryAddress.ReferencePoint))
+            {
+                sb.AppendLine($"Ref.: {CurrentOrder.DeliveryAddress.ReferencePoint}");
+            }
+        }
+        else
+        {
+            sb.AppendLine("Opção: *Retirada no local*");
+        }
+
+
+        sb.AppendLine();
+        sb.AppendLine("*PEDIDO*");
         foreach (var item in cartService.Items)
         {
-            sb.AppendLine($"- {item.Quantity}x {item.Item.Name} - {item.Item.Price.ToString("C")}");
+            sb.AppendLine($"*{item.Quantity}x {item.Item.Name}* - {item.TotalPrice.ToString("C")}");
             if (item.Customizations.Any())
             {
                 var customizations = string.Join(", ", item.Customizations.Select(c => c.Name));
-                sb.AppendLine($"  > Customizações: {customizations}");
+                sb.AppendLine($"  - _{customizations}_");
             }
         }
 
         sb.AppendLine();
-        sb.AppendLine($"Subtotal: {cartService.TotalPrice.ToString("C")}");
-        sb.AppendLine($"Entrega: {(CurrentOrder.DeliveryOption == "Entrega" ? GetDeliveryFee().ToString("C") : "Retirada")}");
-        sb.AppendLine($"Total a Pagar: {GetTotal(cartService).ToString("C")}");
-        sb.AppendLine();
-
-        sb.AppendLine("--- Forma de Pagamento ---");
-        sb.AppendLine($"Método: {CurrentOrder.PaymentMethod}");
+        sb.AppendLine("*PAGAMENTO*");
+        sb.AppendLine($"Forma: {CurrentOrder.PaymentMethod}");
 
         if (CurrentOrder.PaymentMethod == "Cartões")
         {
@@ -58,19 +70,15 @@ public class OrderService
         }
         else if (CurrentOrder.PaymentMethod == "Dinheiro")
         {
-            if (CurrentOrder.ChangeValue > GetTotal(cartService))
+            if (CurrentOrder.ChangeValue > 0 && CurrentOrder.ChangeValue > GetTotal(cartService))
             {
-                var troco = CurrentOrder.ChangeValue - GetTotal(cartService);
-                sb.AppendLine($"Valor informado: {CurrentOrder.ChangeValue.ToString("C")}");
-                sb.AppendLine($"Valor do troco: {troco.ToString("C")}");
+                sb.AppendLine($"Troco para: {CurrentOrder.ChangeValue.ToString("C")}");
             }
         }
-        else if (CurrentOrder.PaymentMethod == "PIX")
-        {
-            //sb.AppendLine($"Chave: {MenuData?.PixKey}");
-            //sb.AppendLine($"Nome: {MenuData?.PixName}");
-            //sb.AppendLine($"Cidade: {MenuData?.PixCity}");
-        }
+
+        sb.AppendLine();
+        sb.AppendLine("-----------------");
+        sb.AppendLine($"*TOTAL:* *{GetTotal(cartService).ToString("C")}*");
 
         return System.Web.HttpUtility.UrlEncode(sb.ToString());
     }

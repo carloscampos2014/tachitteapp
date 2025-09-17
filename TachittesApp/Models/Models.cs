@@ -90,6 +90,9 @@ public class CustomizationStep
     [JsonPropertyName("limit")]
     public int? Limit { get; set; }
 
+    [JsonPropertyName("minRequired")]
+    public int? MinRequired { get; set; }
+
     [JsonPropertyName("options")]
     public List<Option> Options { get; set; } = new List<Option>();
 }

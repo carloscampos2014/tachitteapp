@@ -14,7 +14,8 @@
                     <h2 class="text-xl font-bold text-red-600">Personalizar: @ItemToCustomize?.Name</h2>
                     <button @onclick="Close" class="text-red-500 hover:text-red-700">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -36,17 +37,21 @@
                                     {
                                         <label @onclick="() => SelectSingleOption(step.StepName, option)"
                                                class="flex items-center justify-between border-2 rounded-lg p-4 cursor-pointer transition-colors duration-200
-                                                                          @(selectedSingleOptions.ContainsKey(step.StepName) && selectedSingleOptions[step.StepName] == option ? "bg-red-50 border-red-500" : "bg-white border-transparent hover:bg-red-100")">
-                                            <div class="flex items-center space-x-2">
-                                                <input type="radio"
-                                                       name="@step.StepName"
-                                                       checked="@(selectedSingleOptions.ContainsKey(step.StepName) && selectedSingleOptions[step.StepName] == option)"
-                                                       class="form-radio text-red-600 cursor-pointer" />
-                                                <span class="text-red-800 font-medium">@option.Name</span>
-                                            </div>
-                                            <span class="text-red-600 font-bold">
-                                                @(option.Price == 0 ? "Grátis" : option.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR")))
-                                            </span>
+                                                                                              @(selectedSingleOptions.ContainsKey(step.StepName) && selectedSingleOptions[step.StepName] == option ?
+                                               "bg-red-50 border-red-500" : "bg-white border-transparent hover:bg-red-100")">
+                        <div class="flex items-center space-x-2">
+                            <input type="radio"
+                                   name="@step.StepName"
+                                   checked="@(selectedSingleOptions.ContainsKey(step.StepName) && selectedSingleOptions[step.StepName] == option)"
+                                   class="form-radio text-red-600 cursor-pointer" />
+                            <span class="text-red-800 font-medium">@option.Name</span>
+                        </div>
+                        @if (step.StepName != "Escolha a Marca e Tamanho")
+                                            {
+                                                <span class="text-red-600 font-bold">
+                                                    @(option.Price == 0 ? "Grátis" : option.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR")))
+                                                </span>
+                                            }
                                         </label>
                                     }
                                 </div>
@@ -57,21 +62,23 @@
                                     @foreach (var option in step.Options)
                                     {
                                         <label class="flex items-center justify-between border-2 rounded-lg p-4 cursor-pointer transition-colors duration-200
-                                                                          @(selectedMultiOptions.Contains(option) ? "bg-red-50 border-red-500" : "bg-white border-transparent hover:bg-red-100")
-                                                                          @(step.Limit.HasValue && selectedMultiOptions.Count >= step.Limit && !selectedMultiOptions.Contains(option) ? "opacity-50 cursor-not-allowed" : "")">
-                                            <div class="flex items-center space-x-2">
-                                                <input type="checkbox"
-                                                       @onchange="e => ToggleMultiSelectOption(step, option, e)"
-                                                       checked="@selectedMultiOptions.Contains(option)"
-                                                       disabled="@(step.Limit.HasValue && selectedMultiOptions.Count >= step.Limit && !selectedMultiOptions.Contains(option))"
-                                                       class="form-checkbox text-red-600 rounded cursor-pointer disabled:cursor-not-allowed" />
-                                                <span class="text-red-800 font-medium">@option.Name</span>
-                                            </div>
-                                            <span class="text-red-600 font-bold">
-                                                @(option.Price == 0 ? "Grátis" : option.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR")))
-                                            </span>
-                                        </label>
-                                    }
+                                                                                               @(selectedMultiOptions.Contains(option) ?
+                                               "bg-red-50 border-red-500" : "bg-white border-transparent hover:bg-red-100")
+                                                                                                                                                                          @(step.Limit.HasValue && selectedMultiOptions.Count(o => step.Options.Contains(o)) >= step.Limit && !selectedMultiOptions.Contains(option) ? "opacity-50 cursor-not-allowed" : "")">
+                                                                                                                        <div class="flex items-center space-x-2">
+                                                                                                                            <input type="checkbox"
+                                                                                                                                   @onchange="e => ToggleMultiSelectOption(step, option, e)"
+                                                                                                                                   checked="@selectedMultiOptions.Contains(option)"
+                                                                                                                                   disabled="@(step.Limit.HasValue && selectedMultiOptions.Count(o => step.Options.Contains(o)) >= step.Limit && !selectedMultiOptions.Contains(option))"
+                                                                                                                                   class="form-checkbox text-red-600 rounded cursor-pointer disabled:cursor-not-allowed" />
+                                                                                                                            <span class="text-red-800 font-medium">@option.Name</span>
+                                                                                                                        </div>
+                                                                                                                        <span class="text-red-600 font-bold">
+                                                @(option.Price == 0 ?
+                                                                            "Grátis" : option.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR")))
+                        </span>
+                    </label>
+                                        }
                                 </div>
                             }
                         </div>
@@ -83,7 +90,10 @@
             <div class="sticky bottom-0 bg-white p-6 rounded-b-lg z-10 border-t border-red-300">
                 <div class="flex justify-end items-center space-x-4">
                     <span class="text-xl font-bold text-red-600">Total: @(currentPrice.ToString("C", new System.Globalization.CultureInfo("pt-BR")))</span>
-                    <button @onclick="AddToCart" class="bg-red-500 text-white py-3 px-4 rounded-lg font-bold hover:bg-red-600 transition-colors">
+                    <button @onclick="AddToCart"
+                            class="bg-red-500 text-white py-3 px-4 rounded-lg font-bold hover:bg-red-600 transition-colors
+                                       @(!areRequirementsMet ? "opacity-50 cursor-not-allowed" : "")"
+                            disabled="@(!areRequirementsMet)">
                         Adicionar ao Carrinho
                     </button>
                 </div>
@@ -112,6 +122,7 @@
     private Dictionary<string, Option> selectedSingleOptions = new Dictionary<string, Option>();
     private List<Option> selectedMultiOptions = new List<Option>();
     private decimal currentPrice;
+    private bool areRequirementsMet = true;
 
     protected override void OnParametersSet()
     {
@@ -131,6 +142,7 @@
                     currentPrice += defaultOption.Price;
                 }
             }
+            ValidateRequirements();
         }
     }
 
@@ -143,13 +155,14 @@
 
         selectedSingleOptions[stepName] = option;
         currentPrice += option.Price;
+        ValidateRequirements();
     }
 
     private void ToggleMultiSelectOption(CustomizationStep step, Option option, ChangeEventArgs e)
     {
         if (e.Value is bool isChecked && isChecked)
         {
-            if (step.Limit.HasValue && selectedMultiOptions.Count >= step.Limit.Value)
+            if (step.Limit.HasValue && selectedMultiOptions.Count(o => step.Options.Contains(o)) >= step.Limit.Value)
             {
                 // Limite atingido, não faz nada
             }
@@ -164,12 +177,29 @@
             selectedMultiOptions.Remove(option);
             currentPrice -= option.Price;
         }
+        ValidateRequirements();
+    }
+
+    private void ValidateRequirements()
+    {
+        areRequirementsMet = true;
+        foreach (var step in relevantCustomizationSteps)
+        {
+            if (step.SelectionType == "multiple" && step.MinRequired.HasValue && step.MinRequired > 0)
+            {
+                var selectedCountForStep = selectedMultiOptions.Count(o => step.Options.Contains(o));
+                if (selectedCountForStep < step.MinRequired.Value)
+                {
+                    areRequirementsMet = false;
+                    return;
+                }
+            }
+        }
     }
 
     private List<CustomizationStep> GetRelevantCustomizationSteps(Item item)
     {
         var steps = new List<CustomizationStep>();
-
         var generalSteps = CustomizationGroups.FirstOrDefault(g => g.ProductType == "Tachittes")?.Steps;
         if (generalSteps != null && item.Category.Contains("Tachittes"))
         {
@@ -186,6 +216,8 @@
 
     private void AddToCart()
     {
+        if (!areRequirementsMet) return;
+
         if (ItemToCustomize != null)
         {
             var allCustomizations = selectedSingleOptions.Values.ToList();

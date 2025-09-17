@@ -3,62 +3,350 @@
 @using Microsoft.AspNetCore.Components.Routing
 @using TachittesApp.Services
 @using TachittesApp.Models
+@using System.Globalization
 @inject CartService CartService
+@inject OrderService OrderService
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@implements IDisposable
 
 <div class="container mx-auto p-4 md:p-8">
-    <div class="bg-white p-4 rounded-lg shadow-md mb-6">
-        <div class="flex justify-between items-center mb-4">
-            <a href="/" class="no-underline">
-                <h2 class="text-2xl font-bold text-red-600 hover:underline cursor-pointer">Finalizar Compra</h2>
-            </a>
-            <button @onclick="NavigateToHome" class="bg-red-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-red-600 transition-colors">
-                Voltar ao Menu
-            </button>
+    @* Card de Resumo do Pedido *@
+    <div class="bg-white rounded-lg shadow-md mb-6">
+        @* Cabeçalho Fixo do Card *@
+        <div class="p-4 border-b border-red-300">
+            <div class="flex justify-between items-center">
+                <a href="/" class="no-underline">
+                    <h2 class="text-2xl font-bold text-red-600 hover:underline cursor-pointer">Resumo do Pedido</h2>
+                </a>
+                <button @onclick="NavigateToHome" class="bg-red-500 text-white
+py-2 px-4 rounded-lg font-bold hover:bg-red-600 transition-colors">
+                    Voltar ao Menu
+                </button>
+            </div>
         </div>
 
-        @if (CartService.Items.Any())
-        {
-            <div class="mt-4">
-                <h3 class="text-xl font-bold text-red-600 mb-4">Resumo do Pedido</h3>
+        @* Conteúdo Rolável (Lista de Itens) *@
+        <div class="overflow-y-auto p-4 hide-scrollbar" style="max-height: 35vh;">
+            @if (CartService.Items.Any())
+            {
                 <ul class="divide-y divide-gray-200">
                     @foreach (var item in CartService.Items)
                     {
-                        <li class="py-2 flex justify-between items-center">
-                            <div class="flex items-center space-x-2">
-                                <img src="@($"img/{item.Item.Image}")" alt="@item.Item.Name" class="w-12 h-12 object-cover rounded-md" />
-                                <div>
-                                    <span class="font-semibold text-red-800">@item.Item.Name (@item.Quantity)</span>
-                                    @if (item.Customizations.Any())
-                                    {
-                                        <p class="text-sm text-red-800">
-                                            @string.Join(", ", item.Customizations.Select(c => c.Name))
-                                        </p>
-                                    }
+                        <li class="py-2 flex flex-col space-y-2">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center space-x-2">
+                                    <img src="@($"img/{item.Item.Image}")" alt="@item.Item.Name" class="w-12 h-12 object-cover rounded-md" />
+                                    <span class="font-semibold text-red-800">@item.Item.Name</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <button @onclick="() => CartService.DecrementQuantity(item)" class="bg-red-500 text-white w-5 h-5 p-1 rounded-full hover:bg-red-600 transition-colors duration-200 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none"
+                                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                             class="lucide lucide-minus w-3 h-3">
+                                            <path d="M5 12h14" />
+                                        </svg>
+                                    </button>
+                                    <span class="font-bold text-red-800 text-2xl">@item.Quantity</span>
+                                    <button @onclick="() => CartService.AddItem(item)" class="bg-red-500 text-white w-5 h-5 p-1 rounded-full hover:bg-red-600 transition-colors
+        duration-200 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none"
+                                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                             class="lucide lucide-plus w-3 h-3">
+                                            <path d="M5 12h14" />
+                                            <path d="M12 5v14" />
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
-                            <span class="text-red-600 font-bold">@item.TotalPrice.ToString("C")</span>
+
+                            @if (item.Customizations.Any())
+                            {
+                                <p class="text-sm text-red-800">
+                                    @string.Join(", ", item.Customizations.Select(c => c.Name))
+                                </p>
+                            }
+
+                            <div class="flex justify-between items-center mt-auto">
+                                <button @onclick="() => CartService.RemoveItem(item)" class="text-red-500 text-sm hover:text-red-800 transition-colors duration-200">
+                                    Remover
+                                </button>
+                                <span class="text-red-600 font-bold text-lg">@item.TotalPrice.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                            </div>
                         </li>
                     }
                 </ul>
+            }
+            else
+            {
+                <p class="text-red-600 text-center">Seu carrinho está vazio. Adicione itens para continuar.</p>
+            }
+        </div>
+
+        @* Rodapé Fixo do Card *@
+        @if (CartService.Items.Any())
+        {
+            <div class="p-4 border-t border-red-300 flex-shrink-0">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <span class="text-red-800 font-bold">Subtotal:</span>
+                        <span class="text-red-600 font-bold">@CartService.TotalPrice.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                    </div>
+                    @if (OrderService.CurrentOrder.DeliveryOption == "Entrega")
+                    {
+                        <div>
+                            <span class="text-red-800 font-bold">Taxa de Entrega:</span>
+                            <span class="text-red-600 font-bold">@OrderService.GetDeliveryFee().ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                        </div>
+                    }
+                    <div>
+                        <span class="text-red-800 font-bold text-lg">Total:</span>
+                        <span class="text-red-600 text-2xl font-bold">@OrderService.GetTotal(CartService).ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center font-bold text-base">
+                    <button @onclick="ClearCartAndNavigate" class="bg-white text-red-500
+    py-2 px-3 rounded-lg font-bold hover:bg-red-100 transition-colors border border-red-500">
+                        Limpar Carrinho
+                    </button>
+                </div>
             </div>
         }
-        else
-        {
-            <p class="text-red-600 text-center">Seu carrinho está vazio. Adicione itens para continuar.</p>
-        }
     </div>
+
+    @if (CartService.Items.Any())
+    {
+        @* Card de Dados do Cliente *@
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <h3 class="text-xl font-bold text-red-600 mb-4">Seus Dados</h3>
+            <div class="space-y-4">
+                <div>
+                    <label for="customerName" class="block text-sm font-medium text-red-800">Nome <span class="text-red-500">*</span></label>
+                    <input type="text" id="customerName" @bind="CustomerName" @bind:event="oninput"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                           placeholder="Digite seu nome completo">
+                </div>
+                <div>
+                    <label for="phoneNumber" class="block text-sm font-medium text-red-800">Telefone (WhatsApp) <span class="text-red-500">*</span></label>
+                    <input type="tel" id="phoneNumber" @bind="PhoneNumber" @bind:event="oninput"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                           placeholder="(XX) XXXXX-XXXX">
+                </div>
+            </div>
+        </div>
+
+        @* Card de Opções de Entrega *@
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <h3 class="text-xl font-bold text-red-600 mb-4">Opções de Entrega</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <input type="radio" id="entrega" name="deliveryOption" value="Entrega" class="hidden peer"
+                           checked="@(OrderService.CurrentOrder.DeliveryOption == "Entrega")"
+                           @onchange="@(() => { OrderService.CurrentOrder.DeliveryOption = "Entrega"; ValidateForm(); })">
+                    <label for="entrega" class="flex p-3 w-full bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-red-50 peer-checked:border-red-600 peer-checked:bg-red-50">
+                        <span class="text-sm font-medium text-red-800">Entrega</span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="retirada" name="deliveryOption" value="Retirada" class="hidden peer"
+                           checked="@(OrderService.CurrentOrder.DeliveryOption == "Retirada")"
+                           @onchange="@(() => { OrderService.CurrentOrder.DeliveryOption = "Retirada"; ValidateForm(); })">
+                    <label for="retirada" class="flex p-3 w-full bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-red-50 peer-checked:border-red-600 peer-checked:bg-red-50">
+                        <span class="text-sm font-medium text-red-800">Retirada</span>
+                    </label>
+                </div>
+            </div>
+
+
+            @if (OrderService.CurrentOrder.DeliveryOption == "Entrega")
+            {
+                <div class="mt-6 space-y-4">
+                    <div>
+                        <label for="address" class="block text-sm font-medium text-red-800">Endereço <span class="text-red-500">*</span></label>
+                        <input type="text" id="address" @bind="Street" @bind:event="oninput"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                               placeholder="Rua, Número, Bairro">
+                    </div>
+                    <div>
+                        <label for="reference" class="block text-sm font-medium text-red-800">Ponto de Referência</label>
+                        <input type="text" id="reference" @bind="OrderService.CurrentOrder.DeliveryAddress.ReferencePoint" @bind:event="oninput"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                               placeholder="Próximo a...">
+                    </div>
+                </div>
+            }
+        </div>
+
+        @* Card de Formas de Pagamento *@
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h3 class="text-xl font-bold text-red-600 mb-4">Forma de Pagamento</h3>
+            <div class="space-y-4">
+                @* Opção Dinheiro *@
+                <div>
+                    <input type="radio" id="dinheiro" name="paymentMethod" value="Dinheiro" class="hidden peer"
+                           checked="@(OrderService.CurrentOrder.PaymentMethod == "Dinheiro")"
+                           @onchange="@(() => { OrderService.CurrentOrder.PaymentMethod = "Dinheiro"; ValidateForm(); })" />
+                    <label for="dinheiro" class="flex flex-col p-3 w-full bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-red-50 peer-checked:border-red-600 peer-checked:bg-red-50">
+                        <span class="text-sm font-medium text-red-800">Dinheiro</span>
+                        @if (OrderService.CurrentOrder.PaymentMethod == "Dinheiro")
+                        {
+                            <span class="block mt-4 space-y-4">
+                                <span>
+                                    <label for="change" class="block text-sm font-medium text-red-800">Vai precisar de troco para quanto?</label>
+                                    <span class="block mt-1 w-full sm:w-1/2">
+                                        <input id="change"
+                                               class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                                               placeholder="R$ 0,00"
+                                               @bind-value="changeValueString"
+                                               @oninput="FormatCurrency" />
+                                    </span>
+                                </span>
+                                @if (OrderService.CurrentOrder.ChangeValue > OrderService.GetTotal(CartService))
+                                {
+                                    var troco = OrderService.CurrentOrder.ChangeValue - OrderService.GetTotal(CartService);
+                                    <p class="text-sm text-red-800">Seu troco será de: <span class="font-bold">@troco.ToString("C", ptBR)</span></p>
+                                }
+                            </span>
+                        }
+                    </label>
+                </div>
+
+                @* Opção Cartões *@
+                <div>
+                    <input type="radio" id="cartoes" name="paymentMethod" value="Cartões" class="hidden peer"
+                           checked="@(OrderService.CurrentOrder.PaymentMethod == "Cartões")"
+                           @onchange="@(() => { OrderService.CurrentOrder.PaymentMethod = "Cartões"; ValidateForm(); })" />
+                    <label for="cartoes" class="flex flex-col p-3 w-full bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-red-50 peer-checked:border-red-600 peer-checked:bg-red-50">
+                        <span class="text-sm font-medium text-red-800">Cartões</span>
+                        @if (OrderService.CurrentOrder.PaymentMethod == "Cartões")
+                        {
+                            <span class="block mt-4 grid grid-cols-2 gap-4">
+                                <span>
+                                    <input type="radio" id="credito" name="cardType" value="Crédito" class="hidden peer"
+                                           checked="@(OrderService.CurrentOrder.CardType == "Crédito")"
+                                           @onchange="@(() => { OrderService.CurrentOrder.CardType = "Crédito"; })" />
+                                    <label for="credito" class="flex justify-center p-2 w-full bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-red-50 peer-checked:border-red-500 peer-checked:bg-red-50">
+                                        <span class="text-sm text-red-800">Crédito</span>
+                                    </label>
+                                </span>
+                                <span>
+                                    <input type="radio" id="debito" name="cardType" value="Débito" class="hidden peer"
+                                           checked="@(OrderService.CurrentOrder.CardType == "Débito")"
+                                           @onchange="@(() => { OrderService.CurrentOrder.CardType = "Débito"; })" />
+                                    <label for="debito" class="flex justify-center p-2 w-full bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-red-50 peer-checked:border-red-500 peer-checked:bg-red-50">
+                                        <span class="text-sm text-red-800">Débito</span>
+                                    </label>
+                                </span>
+                                <span>
+                                    <input type="radio" id="refeicao" name="cardType" value="Refeição" class="hidden peer"
+                                           checked="@(OrderService.CurrentOrder.CardType == "Refeição")"
+                                           @onchange="@(() => { OrderService.CurrentOrder.CardType = "Refeição"; })" />
+                                    <label for="refeicao" class="flex justify-center p-2 w-full bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-red-50 peer-checked:border-red-500 peer-checked:bg-red-50">
+                                        <span class="text-sm text-red-800">Refeição</span>
+                                    </label>
+                                </span>
+                                <span>
+                                    <input type="radio" id="alimentacao" name="cardType" value="Alimentação" class="hidden peer"
+                                           checked="@(OrderService.CurrentOrder.CardType == "Alimentação")"
+                                           @onchange="@(() => { OrderService.CurrentOrder.CardType = "Alimentação"; })" />
+                                    <label for="alimentacao" class="flex justify-center p-2 w-full bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-red-50 peer-checked:border-red-500 peer-checked:bg-red-50">
+                                        <span class="text-sm text-red-800">Alimentação</span>
+                                    </label>
+                                </span>
+                            </span>
+                        }
+                    </label>
+                </div>
+
+                @* Opção PIX *@
+                <div>
+                    <input type="radio" id="pix" name="paymentMethod" value="PIX" class="hidden peer"
+                           checked="@(OrderService.CurrentOrder.PaymentMethod == "PIX")"
+                           @onchange="@(() => { OrderService.CurrentOrder.PaymentMethod = "PIX"; ValidateForm(); })" />
+                    <label for="pix" class="flex flex-col p-3 w-full bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-red-50 peer-checked:border-red-600 peer-checked:bg-red-50">
+                        <span class="text-sm font-medium text-red-800">PIX</span>
+                        @if (OrderService.CurrentOrder.PaymentMethod == "PIX")
+                        {
+                            <span class="block mt-2">
+                                <p class="text-sm text-red-800">A chave PIX para pagamento será enviada no seu WhatsApp.</p>
+                            </span>
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        @* Botão Final de Envio *@
+        <div class="mt-6">
+            <button @onclick="SubmitOrder" disabled="@(!isFormValid)"
+                    class="w-full bg-green-500 text-white py-3 px-4 rounded-lg font-bold hover:bg-green-600 transition-colors text-lg flex items-center justify-center space-x-2
+                               @(!isFormValid ? "opacity-50 cursor-not-allowed" : "")">
+                <span>Enviar Pedido Pelo WhatsApp</span>
+            </button>
+            @if (!isFormValid)
+            {
+                <p class="text-red-500 text-sm text-center mt-2">
+                    Por favor, preencha todos os campos obrigatórios (*) para continuar.
+                </p>
+            }
+        </div>
+    }
 </div>
+
 
 @code {
     private MenuData? menuData;
+    private string changeValueString = "";
+    private CultureInfo ptBR = new CultureInfo("pt-BR");
+    private bool isFormValid = false;
+
+    private string CustomerName
+    {
+        get => OrderService.CurrentOrder.CustomerName;
+        set
+        {
+            OrderService.CurrentOrder.CustomerName = value;
+            ValidateForm();
+        }
+    }
+
+    private string PhoneNumber
+    {
+        get => OrderService.CurrentOrder.PhoneNumber;
+        set
+        {
+            OrderService.CurrentOrder.PhoneNumber = value;
+            ValidateForm();
+        }
+    }
+
+    private string Street
+    {
+        get => OrderService.CurrentOrder.DeliveryAddress?.Street ?? "";
+        set
+        {
+            if (OrderService.CurrentOrder.DeliveryAddress != null)
+            {
+                OrderService.CurrentOrder.DeliveryAddress.Street = value;
+                ValidateForm();
+            }
+        }
+    }
+
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             menuData = await Http.GetFromJsonAsync<MenuData>("data/dados.json");
+            OrderService.MenuData = menuData;
+            if (OrderService.CurrentOrder.DeliveryAddress == null)
+            {
+                OrderService.CurrentOrder.DeliveryAddress = new Address();
+            }
+            CartService.OnChange += StateHasChanged;
+            ValidateForm(); // Validar o formulário na inicialização
         }
         catch (Exception ex)
         {
@@ -66,8 +354,61 @@
         }
     }
 
+    private void ValidateForm()
+    {
+        var order = OrderService.CurrentOrder;
+        isFormValid = !string.IsNullOrWhiteSpace(order.CustomerName) &&
+                      !string.IsNullOrWhiteSpace(order.PhoneNumber);
+
+        if (order.DeliveryOption == "Entrega")
+        {
+            isFormValid = isFormValid &&
+                          !string.IsNullOrWhiteSpace(order.DeliveryAddress?.Street);
+        }
+        StateHasChanged();
+    }
+
+    private void FormatCurrency(ChangeEventArgs e)
+    {
+        string value = e.Value?.ToString() ?? "0";
+        string digitsOnly = new string(value.Where(char.IsDigit).ToArray());
+        if (decimal.TryParse(digitsOnly, out decimal number))
+        {
+            number /= 100; // Converte para o formato de moeda correto
+            OrderService.CurrentOrder.ChangeValue = number;
+            changeValueString = number.ToString("C", ptBR);
+        }
+        else
+        {
+            OrderService.CurrentOrder.ChangeValue = 0;
+            changeValueString = string.Empty;
+        }
+    }
+
+    private async Task SubmitOrder()
+    {
+        if (!isFormValid) return;
+
+        var message = OrderService.GenerateWhatsAppMessage(CartService);
+        var whatsappUrl = $"https://wa.me/{menuData?.WhatsappNumber}?text={message}";
+        await JSRuntime.InvokeVoidAsync("open", whatsappUrl, "_blank");
+    }
+
     private void NavigateToHome()
     {
         NavigationManager.NavigateTo(NavigationManager.BaseUri);
+    }
+
+
+
+    private void ClearCartAndNavigate()
+    {
+        CartService.ClearCart();
+        NavigateToHome();
+    }
+
+    public void Dispose()
+    {
+        CartService.OnChange -= StateHasChanged;
     }
 }

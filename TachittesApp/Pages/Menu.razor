@@ -7,34 +7,37 @@
 @inject IJSRuntime JSRuntime
 @inject CartService CartService
 
-<div class="bg-white p-4 rounded-lg shadow-md mb-6">
-    <h2 class="text-2xl font-bold mb-2 text-red-600 text-center">O que são Tachittes?</h2>
-    <div class="about-tachitte md:flex md:items-center md:gap-4">
-        <img src="img/tradicional.png" alt="Tachitte Tradicional" class="w-full h-auto object-cover rounded-md mb-4 md:mb-0 md:w-auto" />
-        <p class="text-red-800 leading-relaxed text-center md:text-left">
-            Descubra o Tachitte, a nossa versão aprimorada do sushi! <b>Mais do que um simples enrolado</b>, o Tachitte
-            é uma experiência completa: <b>maior</b>, <b>mais recheado</b> e irresistivelmente saboroso. Nossa
-            receita base é feita com <b>arroz</b>, <b>alga</b>, <b>cenoura</b> e uma proteína suculenta, criando
-            a tela perfeita para as mais variadas combinações de sabores. Venha se surpreender!
-        </p>
+<div class="sticky top-[68px] z-40 bg-red-50 pb-4">
+    <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+        <h2 class="text-2xl font-bold mb-2 text-red-600 text-center">O que são Tachittes?</h2>
+        <div class="about-tachitte md:flex md:items-center md:gap-4">
+            <img src="img/tradicional.png" alt="Tachitte Tradicional" class="w-full h-auto object-cover rounded-md mb-4 md:mb-0 md:w-auto" />
+            <p class="text-red-800 leading-relaxed text-center md:text-left">
+                Descubra o Tachitte, a nossa versão aprimorada do sushi! <b>Mais do que um simples enrolado</b>, o Tachitte
+                é uma experiência completa: <b>maior</b>, <b>mais recheado</b> e irresistivelmente saboroso. Nossa
+                receita base é feita com <b>arroz</b>, <b>alga</b>, <b>cenoura</b> e uma proteína suculenta, criando
+                a tela perfeita para as mais variadas combinações de sabores. Venha se surpreender!
+            </p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md">
+        <div class="flex border-b border-red-300 overflow-x-auto hide-scrollbar">
+            @if (menuData != null)
+            {
+                @foreach (var category in menuData.Categories)
+                {
+                    <button @onclick="() => selectedCategory = category"
+                            class="tab-button flex-shrink-0 py-3 px-4 text-center text-red-800 hover:bg-red-50 transition-colors rounded-t-lg
+                                                           @(selectedCategory == category ? "active" : "")">
+                        @category.Name
+                    </button>
+                }
+            }
+        </div>
     </div>
 </div>
 
-<div class="bg-white rounded-lg shadow-md mb-6">
-    <div class="flex border-b border-red-300 overflow-x-auto hide-scrollbar">
-        @if (menuData != null)
-        {
-            @foreach (var category in menuData.Categories)
-            {
-                <button @onclick="() => selectedCategory = category"
-                        class="tab-button flex-shrink-0 py-3 px-4 text-center text-red-800 hover:bg-red-50 transition-colors rounded-t-lg
-                                               @(selectedCategory == category ? "active" : "")">
-                    @category.Name
-                </button>
-            }
-        }
-    </div>
-</div>
 
 <div class="menu-tab">
     @if (selectedCategory != null)
@@ -56,7 +59,7 @@
                             <span class="text-xl font-bold text-red-600">
                                 @(item.Price == 0 ? "Grátis" : item.Price.ToString("C", new System.Globalization.CultureInfo("pt-BR")))
                             </span>
-                            <button @onclick:stopPropagation="true" class="add-to-cart-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center">
+                            <button @onclick="() => OpenCustomizationModal(item)" @onclick:stopPropagation="true" class="add-to-cart-btn bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center relative z-10">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                      class="lucide lucide-plus">
