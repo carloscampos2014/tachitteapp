@@ -80,6 +80,6 @@ public class OrderService
         sb.AppendLine("-----------------");
         sb.AppendLine($"*TOTAL:* *{GetTotal(cartService).ToString("C")}*");
 
-        return System.Web.HttpUtility.UrlEncode(sb.ToString());
+        return sb.ToString();
     }
 }

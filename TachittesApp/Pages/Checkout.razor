@@ -389,8 +389,14 @@ py-2 px-4 rounded-lg font-bold hover:bg-red-600 transition-colors">
     {
         if (!isFormValid) return;
 
+        // 1. Gera a mensagem de texto puro
         var message = OrderService.GenerateWhatsAppMessage(CartService);
-        var whatsappUrl = $"https://wa.me/{menuData?.WhatsappNumber}?text={message}";
+
+        // 2. Chama a função JavaScript para copiar a mensagem
+        await JSRuntime.InvokeVoidAsync("copyToClipboard", message);
+
+        // 3. Abre o WhatsApp no contato correto, sem o texto
+        var whatsappUrl = $"https://wa.me/{menuData?.WhatsappNumber}";
         await JSRuntime.InvokeVoidAsync("open", whatsappUrl, "_blank");
     }
 

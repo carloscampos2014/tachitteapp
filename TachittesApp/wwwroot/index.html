@@ -34,6 +34,15 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function () {
+                alert("Pedido copiado! Agora cole a mensagem no WhatsApp.");
+            }).catch(function (error) {
+                alert("Erro ao copiar o texto do pedido.");
+            });
+        }
+    </script>
 </body>
 
 </html>
